@@ -24,7 +24,7 @@ def plot_profit_projection(ad_spend, roas_target, gross_margin):
     plt.axhline(0, color='red', linestyle='--', label='Break-even')
     plt.xlabel("ROAS")
     plt.ylabel("Profit (kr.)")
-    plt.title("Profitfremskrivning vs. ROAS")
+    plt.title("Profitfremskrivning over tid med valgt ROAS-mål")
     plt.legend()
     st.pyplot(plt)
 
@@ -51,16 +51,16 @@ st.metric(label="Månedlig Profit (kr.)", value=f"{monthly_profit:,.2f} kr.", de
 st.subheader("📈 Profitfremskrivning")
 plot_profit_projection(ad_spend, roas_target, gross_margin)
 
-# Ny graf: Profit ved forskellige ROAS niveauer
+# Ny graf: Profit ved forskellige ROAS niveauer (Scatter-plot for forskellig visning)
 st.subheader("📉 Profit ved forskellige ROAS-mål")
 roas_values = [i for i in range(1, 21)]
 profits = [(ad_spend * roas * (gross_margin / 100)) - ad_spend for roas in roas_values]
 
 plt.figure(figsize=(8, 4))
-plt.plot(roas_values, profits, marker="o", linestyle="-", label="Profit vs. ROAS")
+plt.scatter(roas_values, profits, color="blue", label="Profit vs. ROAS")
 plt.axhline(0, color="red", linestyle="--", label="Break-even")
 plt.xlabel("ROAS")
 plt.ylabel("Profit (kr.)")
-plt.title("Profit ved forskellige ROAS-mål")
+plt.title("Profit ved forskellige ROAS-mål (Scatter-plot)")
 plt.legend()
 st.pyplot(plt)
