@@ -15,13 +15,18 @@ def calculate_roas_metrics(gross_margin, ad_spend, roas_target):
     
     return break_even_roas, total_revenue, monthly_profit
 
-def calculate_poas_metrics(gross_margin, ad_spend, roas_target, product_cost, variable_cost):
+def calculate_poas_metrics(ad_spend, roas_target, product_cost, variable_cost, sales_count):
     # Beregn Total Revenue
     total_revenue = ad_spend * roas_target
     
-    # Beregn Profit
-    total_costs = product_cost + variable_cost
-    total_profit = total_revenue - (total_costs * (total_revenue / ad_spend)) - ad_spend
+    # Beregn Omsætning pr. salg
+    revenue_per_sale = total_revenue / sales_count if sales_count > 0 else 0
+    
+    # Beregn Profit pr. salg
+    profit_per_sale = revenue_per_sale - product_cost - variable_cost
+    
+    # Beregn Total Profit
+    total_profit = profit_per_sale * sales_count - ad_spend
     
     # Beregn POAS
     poas = total_profit / ad_spend if ad_spend > 0 else 0
@@ -30,7 +35,7 @@ def calculate_poas_metrics(gross_margin, ad_spend, roas_target, product_cost, va
 
 # Streamlit UI
 st.image("generaxion-logo.png", width=200)  # Tilføj logo øverst på siden
-st.title("📊 ROAS & POAS Kalkulator")
+st.title("📊 ROAS & POAS beregner")
 st.write("Beregn din Return on Ad Spend (ROAS) eller Profit on Ad Spend (POAS)")
 
 # Vælg beregner
@@ -72,9 +77,10 @@ elif calculator_type == "POAS beregner":
     roas_target = st.slider("Mål-ROAS", min_value=1.0, max_value=20.0, value=2.0, step=0.1)
     product_cost = st.number_input("Produktomkostninger pr. salg (kr.)", min_value=0, value=100, step=10)
     variable_cost = st.number_input("Variable omkostninger pr. salg (kr.)", min_value=0, value=50, step=10)
+    sales_count = st.number_input("Antal salg", min_value=1, value=100, step=1)
     
     # Beregn POAS metrics
-    total_profit, poas = calculate_poas_metrics(gross_margin, ad_spend, roas_target, product_cost, variable_cost)
+    total_profit, poas = calculate_poas_metrics(ad_spend, roas_target, product_cost, variable_cost, sales_count)
     
     # Resultater
     st.subheader("📊 Resultater")
