@@ -15,18 +15,15 @@ def calculate_roas_metrics(gross_margin, ad_spend, roas_target):
     
     return break_even_roas, total_revenue, monthly_profit
 
-def calculate_poas_metrics(ad_spend, roas_target, product_cost, variable_cost, sales_count):
-    # Beregn Total Revenue
-    total_revenue = ad_spend * roas_target
+def calculate_poas_metrics(ad_spend, sale_price, product_cost, variable_cost, sales_count):
+    # Beregn Total Revenue (Omsætning)
+    total_revenue = sales_count * sale_price
     
-    # Beregn Omsætning pr. salg
-    revenue_per_sale = total_revenue / sales_count if sales_count > 0 else 0
+    # Beregn samlede omkostninger
+    total_costs = (product_cost + variable_cost) * sales_count + ad_spend
     
-    # Beregn Profit pr. salg
-    profit_per_sale = revenue_per_sale - product_cost - variable_cost
-    
-    # Beregn Total Profit
-    total_profit = profit_per_sale * sales_count - ad_spend
+    # Beregn Profit
+    total_profit = total_revenue - total_costs
     
     # Beregn POAS
     poas = total_profit / ad_spend if ad_spend > 0 else 0
@@ -78,9 +75,10 @@ elif calculator_type == "POAS beregner":
     product_cost = st.number_input("Produktomkostninger pr. salg (kr.)", min_value=0, value=100, step=10)
     variable_cost = st.number_input("Variable omkostninger pr. salg (kr.)", min_value=0, value=50, step=10)
     sales_count = st.number_input("Antal salg", min_value=1, value=100, step=1)
+    sale_price = st.number_input("Salgspris pr. enhed (kr.)", min_value=1, value=200, step=10)
     
     # Beregn POAS metrics
-    total_profit, poas = calculate_poas_metrics(ad_spend, roas_target, product_cost, variable_cost, sales_count)
+    total_profit, poas = calculate_poas_metrics(ad_spend, sale_price, product_cost, variable_cost, sales_count)
     
     # Resultater
     st.subheader("📊 Resultater")
