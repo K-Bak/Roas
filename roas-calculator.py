@@ -16,13 +16,13 @@ def calculate_roas_metrics(gross_margin, ad_spend, roas_target):
     return break_even_roas, total_revenue, monthly_profit
 
 def plot_profit_projection(ad_spend, roas_target, gross_margin):
-    roas_values = [i for i in range(1, 21)]  # ROAS fra 1 til 20
-    profits = [(ad_spend * roas * (gross_margin / 100)) - ad_spend for roas in roas_values]
+    months = list(range(1, 13))  # 12 måneder
+    monthly_profits = [(ad_spend * roas_target * (gross_margin / 100)) - ad_spend for _ in months]
     
     plt.figure(figsize=(8, 4))
-    plt.plot(roas_values, profits, marker='o', linestyle='-', label='Forventet Profit')
+    plt.plot(months, monthly_profits, marker='o', linestyle='-', label='Forventet Månedlig Profit')
     plt.axhline(0, color='red', linestyle='--', label='Break-even')
-    plt.xlabel("ROAS")
+    plt.xlabel("Måneder")
     plt.ylabel("Profit (kr.)")
     plt.title("Profitfremskrivning over tid med valgt ROAS-mål")
     plt.legend()
@@ -47,11 +47,11 @@ st.metric(label="Break-even ROAS", value=round(break_even_roas, 2))
 st.metric(label="Total Omsætning (kr.)", value=f"{total_revenue:,.2f} kr.")
 st.metric(label="Månedlig Profit (kr.)", value=f"{monthly_profit:,.2f} kr.", delta=round(monthly_profit, 2))
 
-# Visualisering af profit
+# Visualisering af profitfremskrivning over tid
 st.subheader("📈 Profitfremskrivning")
 plot_profit_projection(ad_spend, roas_target, gross_margin)
 
-# Ny graf: Profit ved forskellige ROAS niveauer (Scatter-plot for forskellig visning)
+# Ny graf: Profit ved forskellige ROAS niveauer
 st.subheader("📉 Profit ved forskellige ROAS-mål")
 roas_values = [i for i in range(1, 21)]
 profits = [(ad_spend * roas * (gross_margin / 100)) - ad_spend for roas in roas_values]
