@@ -29,7 +29,7 @@ def plot_profit_projection(ad_spend, roas_target, gross_margin):
     st.pyplot(plt)
 
 # Streamlit UI
-st.image("generaxion-logo.png", width=200)  # Tilføj logo øverst på siden
+st.image("generaxion-logo-fixed.png", width=200)  # Tilføj logo øverst på siden
 st.title("📊 ROAS Kalkulator")
 st.write("Beregn din Return on Ad Spend (ROAS) og profitmål for dine kampagner.")
 
@@ -50,3 +50,17 @@ st.metric(label="Månedlig Profit (kr.)", value=f"{monthly_profit:,.2f} kr.", de
 # Visualisering af profit
 st.subheader("📈 Profitfremskrivning")
 plot_profit_projection(ad_spend, roas_target, gross_margin)
+
+# Ny graf: Profit ved forskellige ROAS niveauer
+st.subheader("📉 Profit ved forskellige ROAS-mål")
+roas_values = [i for i in range(1, 21)]
+profits = [(ad_spend * roas * (gross_margin / 100)) - ad_spend for roas in roas_values]
+
+plt.figure(figsize=(8, 4))
+plt.plot(roas_values, profits, marker="o", linestyle="-", label="Profit vs. ROAS")
+plt.axhline(0, color="red", linestyle="--", label="Break-even")
+plt.xlabel("ROAS")
+plt.ylabel("Profit (kr.)")
+plt.title("Profit ved forskellige ROAS-mål")
+plt.legend()
+st.pyplot(plt)
