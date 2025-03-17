@@ -69,9 +69,7 @@ if calculator_type == "ROAS beregner":
 
 elif calculator_type == "POAS beregner":
     # POAS beregner
-    gross_margin = st.slider("Bruttomargin (%)", min_value=5, max_value=95, value=35, step=1)
     ad_spend = st.number_input("Annonceringsbudget (kr.)", min_value=100, value=10000, step=100)
-    roas_target = st.slider("Mål-ROAS", min_value=1.0, max_value=20.0, value=2.0, step=0.1)
     product_cost = st.number_input("Produktomkostninger pr. salg (kr.)", min_value=0, value=100, step=10)
     variable_cost = st.number_input("Variable omkostninger pr. salg (kr.)", min_value=0, value=50, step=10)
     sales_count = st.number_input("Antal salg", min_value=1, value=100, step=1)
