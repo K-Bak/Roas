@@ -82,3 +82,17 @@ elif calculator_type == "POAS beregner":
     st.subheader("📊 Resultater")
     st.metric(label="Total Profit (kr.)", value=f"{total_profit:,.2f} kr.")
     st.metric(label="POAS", value=f"{poas:.2f}")
+    
+    # Generer POAS-værdier for forskellige antal salg
+    sales_range = range(1, sales_count + 1)
+    poas_values = [(calculate_poas_metrics(ad_spend, sale_price, product_cost, variable_cost, s)[1]) for s in sales_range]
+    
+    # Opret graf
+    plt.figure(figsize=(8, 4))
+    plt.plot(sales_range, poas_values, marker="o", linestyle="-", label="POAS vs. Antal salg")
+    plt.axhline(1, color="red", linestyle="--", label="Break-even POAS")
+    plt.xlabel("Antal salg")
+    plt.ylabel("POAS")
+    plt.title("POAS udvikling ved forskellige antal salg")
+    plt.legend()
+    st.pyplot(plt)
